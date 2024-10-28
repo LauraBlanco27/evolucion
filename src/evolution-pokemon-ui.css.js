@@ -54,7 +54,6 @@ export default css`
   overflow-y: auto;
   margin-top: 16px;
   padding: 12px;
-  border-top: 2px solid #ddd;
   font-size: 0.9rem;
   background-color: #f7f7f7;
 }

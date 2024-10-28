@@ -3,7 +3,7 @@
 :host {
   display: block;
   box-sizing: border-box;
-  font-family: Arial, sans-serif; // Usa una fuente más moderna
+  font-family: Arial, sans-serif; 
 }
 
 :host([hidden]), [hidden] {
@@ -16,75 +16,74 @@
 
 .pokemon-card {
   border: 1px solid #ddd;
-  border-radius: 12px; // Aumentar el radio para bordes más suaves
-  padding: 16px; // Más espacio interno
-  max-width: 280px; // Aumentar ancho máximo
+  border-radius: 12px; 
+  padding: 16px; 
+  max-width: 280px;
   margin: 20px auto;
   text-align: center;
-  background-color: #ffffff; // Blanco limpio para mejor contraste
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); // Sombra más suave
-  font-size: 1rem; // Tamaño de fuente más legible
-  transition: transform 0.2s, box-shadow 0.2s; // Transiciones suaves
+  background-color: #ffffff; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 1rem; 
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .pokemon-card:hover {
-  transform: translateY(-5px); // Efecto de elevación al pasar el mouse
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); // Sombra más intensa al pasar el mouse
+  transform: translateY(-5px); 
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); 
 }
 
 .pokemon-image {
-  width: 80px; // Aumentar tamaño de la imagen
+  width: 80px;
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #ddd; // Borde sutil alrededor de la imagen
+  border: 2px solid #ddd; 
 }
 
 .pokemon-name {
-  font-size: 1.2rem; // Aumentar tamaño de fuente
+  font-size: 1.2rem; 
   font-weight: bold;
-  margin: 12px 0; // Mayor separación vertical
-  color: #333; // Color de texto más oscuro para mayor legibilidad
+  margin: 12px 0; 
+  color: #333; 
 }
 
 .evolution-list {
-  max-height: 150px; // Aumentar altura máxima
+  max-height: 150px;
   overflow-y: auto;
-  margin-top: 16px; // Aumentar margen superior
-  padding: 12px; // Mayor espacio interior
-  border-top: 2px solid #ddd; // Borde más grueso en la parte superior
-  font-size: 0.9rem; // Aumentar tamaño de fuente
-  background-color: #f7f7f7; // Fondo más claro
+  margin-top: 16px; 
+  padding: 12px; 
+  font-size: 0.9rem; 
+  background-color: #f7f7f7; 
 }
 
 .evolution-item {
   display: flex;
   align-items: center;
-  gap: 10px; // Mayor espacio entre elementos
-  margin-bottom: 8px; // Mayor separación entre evoluciones
+  gap: 10px; 
+  margin-bottom: 8px; 
 }
 
 .evolution-item img {
-  width: 50px; // Aumentar tamaño de imagen de evolución
+  width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 50%; // Mantener forma circular
-  transition: transform 0.2s; // Transición suave para efectos de hover
+  border-radius: 50%;
+  transition: transform 0.2s; 
 }
 
 .evolution-item img:hover {
-  transform: scale(1.1); // Efecto de zoom al pasar el mouse
+  transform: scale(1.1);
 }
 
 .button-container {
   display: flex;
-  justify-content: center; // Centra el contenido horizontalmente
-  margin-top: 20px; // Espacio superior para separar del contenido anterior
+  justify-content: center; 
+  margin-top: 20px;
 }
 
 h2 {
-  font-size: 1.1rem; // Aumentar tamaño de fuente
-  margin: 10px 0; // Espaciado superior e inferior
-  color: #555; // Color de texto más suave
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); // Sombra para resaltar el texto
+  font-size: 1.1rem; 
+  margin: 10px 0; 
+  color: #555;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); 
 }

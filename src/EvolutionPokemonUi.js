@@ -4,6 +4,7 @@ import { css } from 'lit-element';
 import { getComponentSharedStyles } from '@bbva-web-components/bbva-core-lit-helpers';
 import styles from './evolution-pokemon-ui.css.js';
 import '@bbva-experience-components/bbva-button-default/bbva-button-default.js';
+import '@pokemon/pokemon-list-dm/pokemon-list-dm.js'
 
 export class EvolutionPokemonUi extends LitElement {
   static get properties() {
@@ -16,69 +17,22 @@ export class EvolutionPokemonUi extends LitElement {
 
   constructor() {
     super();
-    this.pokemonId = null;
+    this.pokemonId = 1;
     this.pokemonDetails = {};
     this.evolutions = [];
     this.noEvolutionsMessage = '';
     
   }
 
-  
-
-  async fetchPokemonDetails() {
-    console.log("se ejecuta");
+  async firstUpdated() {
+    const PokemonListDm = this.shadowRoot.querySelector('pokemon-list-dm');
+    const { pokemonDetails, evolutions } = await PokemonListDm.fetchPokemonDetails(this.pokemonId);
     
-    try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${this.pokemonId}/`);
-      const data = await response.json();
-      this.pokemonDetails = {
-        name: data.name,
-        image: data.sprites.front_default,
-        types: data.types.map(typeInfo => typeInfo.type.name).join(', '),
-      };
+    this.pokemonDetails = pokemonDetails;
+    this.evolutions = evolutions;
 
-      // Obtener la URL de la cadena evolutiva
-      const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${this.pokemonId}/`);
-      const speciesData = await speciesResponse.json();
-      const evolutionChainUrl = speciesData.evolution_chain.url;
-
-      // Obtener la cadena evolutiva y extraer las evoluciones con sus imágenes
-      const evolutionResponse = await fetch(evolutionChainUrl);
-      const evolutionData = await evolutionResponse.json();
-      this.evolutions = await this.extractEvolutionsWithImages(evolutionData.chain);
-
-      this.noEvolutionsMessage = this.evolutions.length === 0
-        ? 'Este Pokémon no tiene evoluciones.'
-        : '';
-    } catch (error) {
-      console.error('Error al obtener detalles del Pokémon:', error);
-    }
-  }
-
-  // Extraer evoluciones y obtener sus imágenes
-  async extractEvolutionsWithImages(chain) {
-    const evolutions = [];
-    let current = chain;
-
-    while (current) {
-      const evolutionName = current.species.name;
-      const evolutionImage = await this.fetchPokemonImage(evolutionName);
-      evolutions.push({ name: evolutionName, image: evolutionImage });
-      current = current.evolves_to[0];
-    }
-
-    return evolutions;
-  }
-
-  // Método para obtener la imagen del Pokémon por su nombre
-  async fetchPokemonImage(evolutionName) {
-    try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${evolutionName}/`);
-      const data = await response.json();
-      return data.sprites.front_default;
-    } catch (error) {
-      console.error(`Error al obtener imagen de ${evolutionName}:`, error);
-      return '';
+    if (this.evolutions.length === 0) {
+      this.noEvolutionsMessage = 'Este Pokémon no tiene evoluciones.';
     }
   }
 
@@ -113,13 +67,9 @@ export class EvolutionPokemonUi extends LitElement {
       <div class="button-container">
         <bbva-button-default @click="${this.gotopokemon}"> Ver pokemones</bbva-button-default>
       </div>
-    `;
-  }
-  
 
-  firstUpdated() {
-    this.pokemonId = 1; 
-    this.fetchPokemonDetails();
+      <pokemon-list-dm></pokemon-list-dm>
+    `;
   }
 
   gotopokemon() {
