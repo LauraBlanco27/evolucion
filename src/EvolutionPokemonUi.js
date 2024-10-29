@@ -43,14 +43,18 @@ export class EvolutionPokemonUi extends LitElement {
   }
 
   async updated(changedProperties) {
-    if (changedProperties.has('pokemonName')) { // Actualización según pokemonName
+    if (changedProperties.has('pokemonName')) { 
       const PokemonListDm = this.shadowRoot.querySelector('pokemon-list-dm');
       const { pokemonDetails, evolutions } = await PokemonListDm.fetchPokemonDetails(this.pokemonName);
+  
       this.pokemonDetails = pokemonDetails;
       this.evolutions = evolutions;
-
+  
+      // Reinicia el mensaje de evolución si se encuentran evoluciones
       if (this.evolutions.length === 0) {
         this.noEvolutionsMessage = 'Este Pokémon no tiene evoluciones.';
+      } else {
+        this.noEvolutionsMessage = '';
       }
     }
   }
@@ -85,6 +89,9 @@ export class EvolutionPokemonUi extends LitElement {
   }
 
   gotopokemon() {
-    this.navigate('pokemon');
+    this.dispatchEvent(new CustomEvent('navigate-to-pokemon', {
+      bubbles: true,
+      composed: true
+    }));
   }
 }
