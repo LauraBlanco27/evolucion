@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 import { getComponentSharedStyles } from '@bbva-web-components/bbva-core-lit-helpers';
 import styles from './evolution-pokemon-ui.css.js';
 import '@bbva-experience-components/bbva-button-default/bbva-button-default.js';
-import '@pokemon/pokemon-list-dm/pokemon-list-dm.js'
+import '@pokemon/pokemon-list-dm/pokemon-list-dm.js';
 
 export class EvolutionPokemonUi extends LitElement {
   static get properties() {
@@ -22,16 +22,13 @@ export class EvolutionPokemonUi extends LitElement {
     this.noEvolutionsMessage = '';
   }
 
-  async firstUpdated() {
-    const PokemonListDm = this.shadowRoot.querySelector('pokemon-list-dm');
-    if (this.pokemonName) {
+  async updated(changedProperties) {
+    if (changedProperties.has('pokemonName')) {
+      const PokemonListDm = this.shadowRoot.querySelector('pokemon-list-dm');
       const { pokemonDetails, evolutions } = await PokemonListDm.fetchPokemonDetails(this.pokemonName);
       this.pokemonDetails = pokemonDetails;
       this.evolutions = evolutions;
-
-      if (this.evolutions.length === 0) {
-        this.noEvolutionsMessage = 'Este Pokémon no tiene evoluciones.';
-      }
+      this.noEvolutionsMessage = this.evolutions.length === 0 ? 'Este Pokémon no tiene evoluciones.' : '';
     }
   }
 
@@ -40,23 +37,6 @@ export class EvolutionPokemonUi extends LitElement {
       styles,
       getComponentSharedStyles('evolution-pokemon-ui-shared-styles'),
     ];
-  }
-
-  async updated(changedProperties) {
-    if (changedProperties.has('pokemonName')) { 
-      const PokemonListDm = this.shadowRoot.querySelector('pokemon-list-dm');
-      const { pokemonDetails, evolutions } = await PokemonListDm.fetchPokemonDetails(this.pokemonName);
-  
-      this.pokemonDetails = pokemonDetails;
-      this.evolutions = evolutions;
-  
-      // Reinicia el mensaje de evolución si se encuentran evoluciones
-      if (this.evolutions.length === 0) {
-        this.noEvolutionsMessage = 'Este Pokémon no tiene evoluciones.';
-      } else {
-        this.noEvolutionsMessage = '';
-      }
-    }
   }
 
   render() {
@@ -81,17 +61,19 @@ export class EvolutionPokemonUi extends LitElement {
             `}
       </div>
       <div class="button-container">
-        <bbva-button-default @click="${this.gotopokemon}"> Ver pokemones</bbva-button-default>
+        <bbva-button-default @click="${this._navigateToPokemon}"> Ver pokemones</bbva-button-default>
       </div>
 
       <pokemon-list-dm></pokemon-list-dm>
     `;
   }
 
-  gotopokemon() {
+  _navigateToPokemon() {
     this.dispatchEvent(new CustomEvent('navigate-to-pokemon', {
       bubbles: true,
       composed: true
     }));
   }
 }
+
+window.customElements.define('evolution-pokemon-ui', EvolutionPokemonUi);
