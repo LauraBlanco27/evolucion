@@ -20,6 +20,14 @@ export class EvolutionPokemonUi extends LitElement {
     this.pokemonDetails = {};
     this.evolutions = [];
     this.noEvolutionsMessage = '';
+    this.__handleConnections();
+  }
+
+  __handleConnections() {
+    this.subscribe('pokemon-channel', pokemonName => {
+      this.pokemonId = pokemonName;
+      this.fetchPokemonDetails();
+    });
   }
 
   async updated(changedProperties) {
@@ -47,32 +55,32 @@ export class EvolutionPokemonUi extends LitElement {
         <p><strong>Tipos:</strong> ${this.pokemonDetails.types}</p>
         
         ${this.noEvolutionsMessage
-          ? html`<p>${this.noEvolutionsMessage}</p>`
-          : html`
-              <div class="evolution-list">
-                <h2>Evoluciones</h2>
-                ${this.evolutions.map(evolution => html`
-                  <div class="evolution-item">
-                    <img src="${evolution.image}" alt="${evolution.name}" class="pokemon-image" />
-                    <p>${evolution.name}</p>
-                  </div>
-                `)}
-              </div>
-            `}
+    ? html`<p>${this.noEvolutionsMessage}</p>`
+    : html`
+            <div class="evolution-list">
+              <h2>Evoluciones</h2>
+              ${this.evolutions.map(evolution => html`
+                <div class="evolution-item">
+                  <img src="${evolution.image}" alt="${evolution.name}" class="pokemon-image" />
+                  <p>${evolution.name}</p>
+                </div>
+              `)}
+            </div>
+          `}
       </div>
-      <div class="button-container">
-        <bbva-button-default @click="${this._navigateToPokemon}"> Ver pokemones</bbva-button-default>
-      </div>
-
-      <pokemon-list-dm></pokemon-list-dm>
+      <bbva-button-default @click="${this.gotopokemon}"> Ver pokemones</bbva-button-default>
     `;
   }
 
-  _navigateToPokemon() {
-    this.dispatchEvent(new CustomEvent('navigate-to-pokemon', {
-      bubbles: true,
-      composed: true
-    }));
+  firstUpdated() {
+    this.subscribe('pokemon-channel', pokemonName => {
+      this.pokemonId = pokemonName;
+      this.fetchPokemonDetails();
+    });
+  }
+
+  gotopokemon() {
+    this.navigate('pokemon');
   }
 }
 
